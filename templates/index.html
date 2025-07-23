@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>My Shopeee</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+  <div class="container mx-auto p-6">
+    <h1 class="text-3xl font-bold text-center mb-6">🛍️ Welcome to My Shopeee</h1>
+
+    <!-- Top Navigation Links -->
+    <div class="flex flex-wrap justify-between items-center mb-6 gap-4">
+      <a href="/cart" class="text-blue-600 font-medium">🛒 View Cart</a>
+
+      {% if session['username'] %}
+        <span class="text-gray-700">
+          Welcome, {{ session['username'] }} |
+          <a href="/logout" class="text-red-600 ml-1">Logout</a>
+        </span>
+        <a href="/track" class="text-purple-600 font-medium">📦 Track Order</a>
+        <a href="/my-orders" class="text-purple-600 font-medium">📦 My Orders</a>
+      {% else %}
+        
+        <a href="/login" class="text-green-600 font-medium">🔐 Login</a>
+      {% endif %}
+
+      <a href="/category" class="text-green-600 font-medium">📂 Category</a>
+    </div>
+
+    <!-- Search -->
+    <form method="get" action="/" class="mb-6 flex max-w-xl mx-auto">
+      <input type="text" name="q" placeholder="Search products..." class="flex-1 px-4 py-2 border rounded-l" />
+      <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-r">Search</button>
+    </form>
+
+    <!-- Products Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {% if products %}
+        {% for product in products %}
+          <div class="bg-white rounded-xl shadow p-4">
+            <img src="{{ url_for('static', filename=product['image_url'].split('static/')[1]) }}"
+                 class="w-full h-48 object-cover rounded mb-3" />
+            <h2 class="text-lg font-semibold">{{ product['name'] }}</h2>
+            <p class="text-gray-600 mb-2">₹{{ product['price'] }}</p>
+
+            <div class="flex gap-2">
+              <a href="{{ url_for('add_to_cart', product_id=product['id']) }}"
+                 class="flex-1 text-center bg-blue-500 text-white px-4 py-2 rounded">Add to Cart</a>
+              <a href="{{ url_for('checkout') }}"
+                 class="flex-1 text-center bg-green-500 text-white px-4 py-2 rounded">Buy Now</a>
+            </div>
+          </div>
+        {% endfor %}
+      {% elif search_done %}
+        <div class="col-span-full text-center text-gray-600 py-20">😕 No products found for your search.</div>
+      {% endif %}
+    </div>
+  </div>
+</body>
+</html>

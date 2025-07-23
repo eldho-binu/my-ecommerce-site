@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Product Categories</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+  <div class="container mx-auto p-6">
+    <h1 class="text-3xl font-bold mb-6 text-center">🗂️ Browse Categories</h1>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      
+      <!-- 🔌 Electronics Category -->
+      <a href="{{ url_for('get_products_by_category', category_name='electronics') }}"
+         class="block bg-white p-6 rounded-xl shadow hover:shadow-lg transition duration-200 text-center">
+        <h2 class="text-xl font-semibold mb-2">📱 Electronics</h2>
+        <p class="text-gray-600">Mobiles, Laptops, Accessories</p>
+      </a>
+
+      <!-- 👗 Fashion Category -->
+      <a href="{{ url_for('get_products_by_category', category_name='fashion') }}"
+         class="block bg-white p-6 rounded-xl shadow hover:shadow-lg transition duration-200 text-center">
+        <h2 class="text-xl font-semibold mb-2">👗 Fashion</h2>
+        <p class="text-gray-600">Clothes, Shoes, Bags</p>
+      </a>
+
+      <!-- 🍔 Food Category -->
+      <a href="{{ url_for('get_products_by_category', category_name='food') }}"
+         class="block bg-white p-6 rounded-xl shadow hover:shadow-lg transition duration-200 text-center">
+        <h2 class="text-xl font-semibold mb-2">🍔 Food</h2>
+        <p class="text-gray-600">Snacks, Beverages, Packaged Foods</p>
+      </a>
+
+      <!-- 📚 Books Category -->
+      <a href="{{ url_for('get_products_by_category', category_name='books') }}"
+         class="block bg-white p-6 rounded-xl shadow hover:shadow-lg transition duration-200 text-center">
+        <h2 class="text-xl font-semibold mb-2">📚 Books</h2>
+        <p class="text-gray-600">Fiction, Non-fiction, Textbooks</p>
+      </a>
+
+    </div>
+  </div>
+</body>
+</html>

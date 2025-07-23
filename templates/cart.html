@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Your Cart</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+  <div class="container mx-auto p-6">
+    <h2 class="text-3xl font-bold text-center mb-6">🛒 Your Cart</h2>
+
+    {% if products %}
+      <ul class="space-y-4">
+        {% for product in products %}
+          <li class="bg-white shadow rounded p-4 flex justify-between items-center">
+            <div>
+              <h3 class="font-semibold">{{ product['name'] }}</h3>
+              <p class="text-gray-500">₹{{ product['price'] }}</p>
+            </div>
+            <img src="{{ url_for('static', filename=product['image_url'].split('static/')[1]) }}" class="w-24 h-24 object-cover rounded" />
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="text-center text-gray-600">🛒 Your cart is empty.</p>
+    {% endif %}
+  </div>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Track Your Order</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+  <form method="POST" class="bg-white p-8 rounded shadow w-full max-w-md">
+    <h2 class="text-xl font-bold mb-4 text-center">📦 Track Your Order</h2>
+    <input type="text" name="order_id" placeholder="Enter your Order ID" class="w-full border p-2 rounded mb-4" required />
+    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded w-full">Track</button>
+
+    {% if result %}
+      <div class="mt-6 p-4 bg-green-100 rounded">
+        <p><strong>Order ID:</strong> {{ result.order_id }}</p>
+        <p><strong>Customer:</strong> {{ result.user_name }}</p>
+        <p><strong>Product:</strong> {{ result.product_name }}</p>
+        <p><strong>Status:</strong> {{ result.status }}</p>
+      </div>
+    {% elif error %}
+      <p class="mt-4 text-red-500 text-center">{{ error }}</p>
+    {% endif %}
+  </form>
+</body>
+</html>
