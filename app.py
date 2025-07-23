@@ -3,47 +3,40 @@ import pandas as pd
 import os
 
 app = Flask(__name__)
-app.secret_key = 'mysecretkey'
 
-EXCEL_FILE = 'ecommerce_data.xlsx'
+# Use secret key from environment or fallback
+app.secret_key = os.environ.get('SECRET_KEY', 'fallback-secret')
 
-# Initialize Excel file with required sheets and columns
+# Use absolute path to avoid file not found issues
+EXCEL_FILE = os.path.join(os.getcwd(), 'ecommerce_data.xlsx')
+
+# Initialize Excel file
 def initialize_excel():
     if not os.path.exists(EXCEL_FILE):
         with pd.ExcelWriter(EXCEL_FILE, engine='openpyxl') as writer:
-            # Product Sheet
             pd.DataFrame(columns=['id', 'name', 'price', 'image']).to_excel(writer, sheet_name='Products', index=False)
-            # Users Sheet
             pd.DataFrame(columns=['username', 'password']).to_excel(writer, sheet_name='Users', index=False)
-            # Orders Sheet
             pd.DataFrame(columns=['username', 'items', 'total']).to_excel(writer, sheet_name='Orders', index=False)
 
-# Read products
 def read_all_products():
     df = pd.read_excel(EXCEL_FILE, sheet_name='Products')
     return df.to_dict(orient='records')
 
-# Read users
 def read_users():
     df = pd.read_excel(EXCEL_FILE, sheet_name='Users')
     return df.to_dict(orient='records')
 
-# Save a new user
 def save_user(username, password):
     df = pd.read_excel(EXCEL_FILE, sheet_name='Users')
     df = pd.concat([df, pd.DataFrame([{'username': username, 'password': password}])], ignore_index=True)
     with pd.ExcelWriter(EXCEL_FILE, engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
         df.to_excel(writer, sheet_name='Users', index=False)
 
-# Get product by ID
 def get_product_by_id(product_id):
     df = pd.read_excel(EXCEL_FILE, sheet_name='Products')
     product = df[df['id'] == product_id]
-    if not product.empty:
-        return product.iloc[0].to_dict()
-    return None
+    return product.iloc[0].to_dict() if not product.empty else None
 
-# Save order
 def save_order(username, items, total):
     df = pd.read_excel(EXCEL_FILE, sheet_name='Orders')
     new_order = pd.DataFrame([{'username': username, 'items': str(items), 'total': total}])
@@ -125,9 +118,8 @@ def track():
     user_orders = df[df['username'] == username].to_dict(orient='records')
     return render_template('track.html', orders=user_orders)
 
-# ✅ DEPLOYMENT-FRIENDLY APP START
+# ✅ DEPLOYMENT START
 if __name__ == '__main__':
-    if not os.path.exists(EXCEL_FILE):
-        initialize_excel()
+    initialize_excel()
     port = int(os.environ.get('PORT', 10000))
     app.run(host='0.0.0.0', port=port)
